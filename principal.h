@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QFile>
 #include <QMessageBox>
-
+#include "persona.h"
 #include "personadialog.h"
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +23,8 @@ private slots:
     void on_btnAgregar_clicked();
 
     void on_btnGuardar_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::Principal *ui;

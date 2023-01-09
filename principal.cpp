@@ -37,17 +37,14 @@ void Principal::on_btnAgregar_clicked()
         return;
     }
     // Recuperar los datos ingresados
-    QString nombre = pd.nombre();
-    QString apellido = pd.apellido();
-    QString telefono = pd.telefono();
-    QString email = pd.email();
+    Persona *p = pd.persona();
     //Agregar a la tabla
     int fila = ui->tblLista->rowCount();
     ui->tblLista->insertRow(fila);
-    ui->tblLista->setItem(fila, NOMBRE, new QTableWidgetItem(nombre));
-    ui->tblLista->setItem(fila, APELLIDO, new QTableWidgetItem(apellido));
-    ui->tblLista->setItem(fila, TELEFONO, new QTableWidgetItem(telefono));
-    ui->tblLista->setItem(fila, EMAIL, new QTableWidgetItem(email));
+    ui->tblLista->setItem(fila, NOMBRE, new QTableWidgetItem(p->nombre()));
+    ui->tblLista->setItem(fila, APELLIDO, new QTableWidgetItem(p->apellido()));
+    ui->tblLista->setItem(fila, TELEFONO, new QTableWidgetItem(p->telefono()));
+    ui->tblLista->setItem(fila, EMAIL, new QTableWidgetItem(p->email()));
 
 }
 
@@ -104,5 +101,27 @@ void Principal::cargarContactos()
         }
         archivo.close();
     }
+}
+
+
+void Principal::on_pushButton_clicked()
+{
+    // Crear y mostrar el dialogo
+    PersonaDialog pd(this);
+    pd.setWindowTitle("Agregar contacto");
+    // Abrir la ventana y evaluar respuesta
+    int res = pd.exec();
+    if (res == QDialog::Rejected){
+        return;
+    }
+    // Recuperar los datos ingresados
+    Persona *p = pd.persona();
+    //Agregar a la tabla
+    int fila = ui->tblLista->rowCount();
+    ui->tblLista->insertRow(fila);
+    ui->tblLista->setItem(fila, NOMBRE, new QTableWidgetItem(p->nombre()));
+    ui->tblLista->setItem(fila, APELLIDO, new QTableWidgetItem(p->apellido()));
+    ui->tblLista->setItem(fila, TELEFONO, new QTableWidgetItem(p->telefono()));
+    ui->tblLista->setItem(fila, EMAIL, new QTableWidgetItem(p->email()));
 }
 

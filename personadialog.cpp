@@ -13,7 +13,7 @@ PersonaDialog::~PersonaDialog()
     delete ui;
 }
 
-QString PersonaDialog::nombre()
+/*QString PersonaDialog::nombre()
 {
     return ui->inNombre->text();
 }
@@ -32,9 +32,22 @@ QString PersonaDialog::email()
 {
     return ui->inEmail->text();
 }
-
+*/
 void PersonaDialog::on_buttonBox_accepted()
 {
+    QString nombre  =ui->inNombre->text();
+
+
+    QString apellido =ui->inApellido->text();
+
+
+    QString telefono = ui->inTelefono->text();
+
+
+    QString email = ui->inEmail->text();
+
+    this->m_persona = new Persona(nombre,apellido,telefono,email);
+
     accept();
 }
 
@@ -42,5 +55,10 @@ void PersonaDialog::on_buttonBox_accepted()
 void PersonaDialog::on_buttonBox_rejected()
 {
     reject();
+}
+
+Persona *PersonaDialog::persona() const
+{
+    return m_persona;
 }
 
