@@ -4,8 +4,11 @@
 #include <QWidget>
 #include <QFile>
 #include <QMessageBox>
-#include "persona.h"
+#include <QTableWidgetItem>
+
 #include "personadialog.h"
+#include "persona.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Principal; }
@@ -24,10 +27,16 @@ private slots:
 
     void on_btnGuardar_clicked();
 
-    void on_pushButton_clicked();
+    void on_btnEliminar_clicked();
 
+    void on_tblLista_itemClicked(QTableWidgetItem *item);
+
+
+    void on_btnEditar_clicked();
 private:
     Ui::Principal *ui;
+    int m_u;
+    int m_f;
     const QString ARCHIVO = "agenda.csv";
     enum Columna
     {

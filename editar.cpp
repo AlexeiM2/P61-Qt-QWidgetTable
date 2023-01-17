@@ -1,19 +1,16 @@
-#include "personadialog.h"
-#include "ui_personadialog.h"
-#include <QRegExpValidator>
-#include <QtCore>
-#include <QtGui>
+#include "editar.h"
+#include "ui_editar.h"
 
-#define NOMBRE_RX "([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}"
-
-#define EMAIL_RX "([a-zA-Z'@.-]+( [a-zA-Z'.-]+)*){2,30}"
-
-#define TELEFONO_RX "([0][1-9]{0,11})"
-
-PersonaDialog::PersonaDialog(QWidget *parent) :
+Editar::Editar(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PersonaDialog)
+    ui(new Ui::Editar)
 {
+    m_u=0;
+    m_f=-1;
+    ui->tblLista->setItem(m_f,0,new QTableWidgetItem(ui->inNombre->text()));
+    ui->tblLista->setItem(m_f,1,new QTableWidgetItem(ui->inApellido->text()));
+    ui->tblLista->setItem(m_f,2,new QTableWidgetItem(ui->inTelefono->text()));
+    ui->tblLista->setItem(m_f,3,new QTableWidgetItem(ui->inEmail->text()));
     ui->setupUi(this);
     QRegExp rxTelefono(TELEFONO_RX);
     QRegExp rxNombre(NOMBRE_RX) , rxApellido(NOMBRE_RX), rxEmail(EMAIL_RX);
@@ -25,14 +22,16 @@ PersonaDialog::PersonaDialog(QWidget *parent) :
     ui->inApellido->setValidator(apellido);
     ui->inEmail->setValidator(email);
     ui->inTelefono->setValidator(tele);
+
 }
 
-PersonaDialog::~PersonaDialog()
+Editar::~Editar()
 {
     delete ui;
 }
 
-void PersonaDialog::on_buttonBox_accepted(){
+void Editar::on_buttonBox_accepted()
+{
     QString nombre = ui->inNombre->text();
     if(nombre.isEmpty()){
          return ;
@@ -54,11 +53,11 @@ void PersonaDialog::on_buttonBox_accepted(){
 }
 
 
-void PersonaDialog::on_buttonBox_rejected(){
+void Editar::on_buttonBox_rejected()
+{
     reject();
 }
 
-Persona *PersonaDialog::persona() const{
+Persona *Editar::persona() const{
     return m_persona;
 }
-

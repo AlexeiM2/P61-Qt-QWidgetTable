@@ -16,6 +16,7 @@ public:
     const QString &email() const;
 
 signals:
+
 private:
     QString m_nombre;
     QString m_apellido;

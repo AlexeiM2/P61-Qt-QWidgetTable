@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/recursp">
+        <file>resources/icono.png</file>
+    </qresource>
+</RCC>

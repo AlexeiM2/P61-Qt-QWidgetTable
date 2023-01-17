@@ -1,14 +1,34 @@
 #include "principal.h"
 #include "ui_principal.h"
+#include <QRegExpValidator>
+#include <QtCore>
+#include <QtGui>
+#include "editar.h"
+#include "ui_editar.h"
 
 
 #include "QDebug"
+
+#define NOMBRE_RX "([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}"
+
+#define EMAIL_RX "([a-zA-Z'@.-]+( [a-zA-Z'.-]+)*){2,30}"
 
 Principal::Principal(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Principal)
 {
     ui->setupUi(this);
+    QRegExp rxNombre(NOMBRE_RX) , rxApellido(NOMBRE_RX), rxEmail(EMAIL_RX),rxTelefono(TELEFONO_RX);
+    QRegExpValidator *valinombre =new QRegExpValidator(rxNombre,this);
+    QRegExpValidator *valiapellido =new QRegExpValidator(rxApellido,this);
+    QRegExpValidator *valiemail = new QRegExpValidator(rxEmail, this);
+    QRegExpValidator *valitelefono = new QRegExpValidator(rxTelefono, this);
+    ui->inNombre->setValidator(valinombre);
+    ui->inApellido->setValidator(valiapellido);
+    ui->inEmail->setValidator(valiemail);
+    ui->inTelefono->setValidator(valitelefono);
+    m_u=0;
+    m_f=-1;
     setWindowTitle("Agenda telefónica");
     // Configurar la tabla
     ui->tblLista->setColumnCount(4);
@@ -36,7 +56,7 @@ void Principal::on_btnAgregar_clicked()
     if (res == QDialog::Rejected){
         return;
     }
-    // Recuperar los datos ingresados
+    // Recuperar el objeto del cuadro de dialogo
     Persona *p = pd.persona();
     //Agregar a la tabla
     int fila = ui->tblLista->rowCount();
@@ -104,24 +124,35 @@ void Principal::cargarContactos()
 }
 
 
-void Principal::on_pushButton_clicked()
+void Principal::on_btnEliminar_clicked()
 {
-    // Crear y mostrar el dialogo
-    PersonaDialog pd(this);
-    pd.setWindowTitle("Agregar contacto");
-    // Abrir la ventana y evaluar respuesta
-    int res = pd.exec();
+    ui->tblLista->removeRow(m_f);
+}
+
+
+
+void Principal::on_tblLista_itemClicked(QTableWidgetItem *item)
+{
+    m_f= item->row();
+    QTableWidgetItem *nombre =ui->tblLista->item(m_f,0);
+    QTableWidgetItem *apellido =ui->tblLista->item(m_f,1);
+    QTableWidgetItem *telefono =ui->tblLista->item(m_f,2);
+    QTableWidgetItem *email =ui->tblLista->item(m_f,3);
+    ui->inNombre->setText(nombre->text());
+    ui->inApellido->setText(apellido->text());
+    ui->inTelefono->setText(telefono->text());
+    ui->inEmail->setText(email->text());
+}
+
+
+void Principal::on_btnEditar_clicked()
+{
+    Editar ed(this);
+    ed.setWindowTitle("Edidat");
+    int res = ed.exec();
     if (res == QDialog::Rejected){
         return;
     }
-    // Recuperar los datos ingresados
-    Persona *p = pd.persona();
-    //Agregar a la tabla
-    int fila = ui->tblLista->rowCount();
-    ui->tblLista->insertRow(fila);
-    ui->tblLista->setItem(fila, NOMBRE, new QTableWidgetItem(p->nombre()));
-    ui->tblLista->setItem(fila, APELLIDO, new QTableWidgetItem(p->apellido()));
-    ui->tblLista->setItem(fila, TELEFONO, new QTableWidgetItem(p->telefono()));
-    ui->tblLista->setItem(fila, EMAIL, new QTableWidgetItem(p->email()));
 }
+
 
